@@ -56,6 +56,7 @@ namespace Quartz.Impl.AdoJobStore
         protected readonly ITypeLoadHelper typeLoadHelper;
         protected AdoUtil adoUtil;
         protected IList<ITriggerPersistenceDelegate> triggerPersistenceDelegates = new List<ITriggerPersistenceDelegate>();
+		protected readonly ITypeNameResolver typeNameResolver = new ShortenedAssemblyQualifiedNameResolver();
 
         /// <summary>
         /// Create new StdAdoDelegate instance.
@@ -568,13 +569,14 @@ namespace Quartz.Impl.AdoJobStore
 
         protected virtual string GetStorableJobTypeName(Type jobType)
         {
-            int idx = jobType.AssemblyQualifiedName.IndexOf(',');
-            // find next
-            idx = jobType.AssemblyQualifiedName.IndexOf(',', idx + 1);
+			return typeNameResolver.GetName(jobType);
+			//int idx = jobType.AssemblyQualifiedName.IndexOf(',');
+			//// find next
+			//idx = jobType.AssemblyQualifiedName.IndexOf(',', idx + 1);
 
-            string retValue = jobType.AssemblyQualifiedName.Substring(0, idx);
+			//string retValue = jobType.AssemblyQualifiedName.Substring(0, idx);
 
-            return retValue;
+			//return retValue;
         }
 
         /// <summary>
